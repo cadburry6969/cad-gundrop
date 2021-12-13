@@ -1,4 +1,6 @@
- # 📷 Preview
+3 different satellite radio calls russian mafia and drops crate with gun, each satellite has different weapons bind to it. 
+
+# 📷 Preview
 Coming Soon
 
 # 🛈 Shared.lua
