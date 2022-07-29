@@ -2,6 +2,8 @@ This resource is a Item drop script which upon using any of the given below ment
 
 - 3 different satellite radio calls russian mafia and drops crate with gun, each satellite has different weapons bind to it.
 
+# Old Preview: https://youtu.be/9tv-na2a8D8
+
 # Dependencies:
 
 * qb-core (latest)
