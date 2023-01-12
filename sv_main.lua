@@ -13,6 +13,14 @@ RegisterNetEvent("cad-gundrop:server:ItemHandler", function(kind, item, amount)
     end    
 end)
 
+RegisterNetEvent("cad-gundrop:server:showTarget", function(obj, item, amount)
+    TriggerClientEvent('cad-gundrop:client:showTarget', -1, obj, item, amount)
+end)
+
+RegisterNetEvent("cad-gundrop:server:removeTarget", function(obj)
+    TriggerClientEvent('cad-gundrop:client:removeTarget', -1, obj)
+end)
+
 -- get amount of cops online and on duty
 QBCore.Functions.CreateCallback('cad-gundrop:server:getCops', function(source, cb)
     local count = 0

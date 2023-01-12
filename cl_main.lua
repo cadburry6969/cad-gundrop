@@ -4,8 +4,7 @@ local pilot, aircraft, parachute, crate, soundID
 
 -- reward on open crate
 function OpenCrate(crate, item, amount)
-    TriggerServerEvent("cad-gundrop:server:ItemHandler", "add", item, amount)                           
-    exports[Config.TargetName]:RemoveTargetEntity(crate, Config.TargetLabel)
+    TriggerServerEvent("cad-gundrop:server:ItemHandler", "add", item, amount)
     DeleteEntity(crate)  
     QBCore.Functions.Notify(Config.Lang["item_recieved"].." "..amount..'x '..item)
 end
@@ -95,19 +94,8 @@ function CrateDrop(item, amount, planeSpawnDistance, dropCoords)
                 Wait(0)
                 SetModelAsNoLongerNeeded(GetHashKey(Config.LoadModels[i]))
             end
-            RemoveWeaponAsset(GetHashKey(Config.FlareName))         
-            exports[Config.TargetName]:AddTargetEntity(crate, {
-                options = {
-                {           
-                    icon = Config.TargetIcon,
-                    label = Config.TargetLabel,
-                    action = function(entity)                      
-                        OpenCrate(crate, item, amount)                 
-                    end,      
-                }
-                },
-                distance = 2.5,
-            })
+            RemoveWeaponAsset(GetHashKey(Config.FlareName))
+            TriggerServerEvent("cad-gundrop:server:showTarget", ObjToNet(crate), item, amount)
         end)  
     end)
 end
@@ -126,6 +114,31 @@ function GetRandomItemData(item)
         return randomItem["name"], randomItem["amount"]
     end    
 end
+
+-- Make target available for all players
+RegisterNetEvent("cad-gundrop:client:showTarget", function(obj, item, amount)
+    local crate = NetToObj(obj)
+    exports[Config.TargetName]:AddTargetEntity(crate, {
+        options = {
+        {           
+            icon = Config.TargetIcon,
+            label = Config.TargetLabel,
+            action = function(entity)
+                TriggerServerEvent("cad-gundrop:server:removeTarget", obj)
+                OpenCrate(crate, item, amount)                 
+            end,      
+        }
+        },
+        distance = 2.5,
+    })
+end)
+
+-- Remove target from all players as soon as someone opens the crate
+RegisterNetEvent("cad-gundrop:client:removeTarget", function(obj)
+    local crate = NetToObj(obj)
+    exports[Config.TargetName]:RemoveTargetEntity(crate, Config.TargetLabel)
+end)
+
 
 -- Start the AirDrop
 RegisterNetEvent("cad-gundrop:client:StartDrop", function(item, amount, roofCheck, planeSpawnDistance, dropCoords)
