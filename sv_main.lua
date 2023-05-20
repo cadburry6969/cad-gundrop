@@ -1,5 +1,20 @@
 local QBCore = exports[Config.CoreName]:GetCoreObject()
 
+-- cooldown
+local cooldown = nil
+local function checkTime()
+    if cooldown then
+        local curTime = os.time()
+        if cooldown < curTime then
+            cooldown = nil
+            return true
+        else
+            return false
+        end
+    end
+    return true
+end
+
 -- Item Handler
 RegisterNetEvent("cad-gundrop:server:ItemHandler", function(kind, item, amount)
     local src = source
@@ -8,6 +23,7 @@ RegisterNetEvent("cad-gundrop:server:ItemHandler", function(kind, item, amount)
         Player.Functions.AddItem(item, amount)
         TriggerClientEvent('inventory:client:ItemBox', src, QBCore.Shared.Items[item], 'add', amount)
     elseif kind == 'remove' then
+        cooldown = os.time() + (Config.Cooldown * 60 * 60)
         Player.Functions.RemoveItem(item, amount)
         TriggerClientEvent('inventory:client:ItemBox', src, QBCore.Shared.Items[item], 'remove', amount)
     end    
@@ -34,18 +50,31 @@ end)
 
 -- Golden Satalite Phone
 QBCore.Functions.CreateUseableItem("goldenphone", function(source, item)
-    local src = source    
-    TriggerClientEvent("cad-gundrop:client:CreateDrop", src, tostring(item.name), true, 400)            
+    local src = source
+    local time = os.time()
+    if checkTime() then
+        TriggerClientEvent("cad-gundrop:client:CreateDrop", src, tostring(item.name), true, 400)
+    else
+        TriggerClientEvent("QBCore:Notify", src, 'Please wait for sometime before you use again!')
+    end
 end)
 
 -- Red Satellite Phone
 QBCore.Functions.CreateUseableItem("redphone", function(source, item)
-    local src = source    
-    TriggerClientEvent("cad-gundrop:client:CreateDrop", src, tostring(item.name), true, 400)            
+    local src = source
+    if checkTime() then
+        TriggerClientEvent("cad-gundrop:client:CreateDrop", src, tostring(item.name), true, 400)
+    else
+        TriggerClientEvent("QBCore:Notify", src, 'Please wait for sometime before you use again!')
+    end
 end)
 
 -- Green Satellite Phone
 QBCore.Functions.CreateUseableItem("greenphone", function(source, item)
-    local src = source    
-    TriggerClientEvent("cad-gundrop:client:CreateDrop", src, tostring(item.name), true, 400)            
+    local src = source
+    if checkTime() then
+        TriggerClientEvent("cad-gundrop:client:CreateDrop", src, tostring(item.name), true, 400)
+    else
+        TriggerClientEvent("QBCore:Notify", src, 'Please wait for sometime before you use again!')
+    end
 end)

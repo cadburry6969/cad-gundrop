@@ -14,6 +14,7 @@ Config.PoliceJobs = {"police"} -- All types of police job in server.
 
 -- Other Config
 Config.TimeUntilDrop = 2 -- How long does it take to drop a gun? (in minutes)
+Config.Cooldown = 5 -- in mins
 
 -- Objects and models Config
 Config.LoadModels = {"w_am_flare", "p_cargo_chute_s", "ex_prop_adv_case_sm", "cuban800", "s_m_m_pilot_02"} -- Models to pre-load.
