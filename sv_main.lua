@@ -23,10 +23,10 @@ RegisterNetEvent("cad-gundrop:server:ItemHandler", function(kind, item, amount)
         Player.Functions.AddItem(item, amount)
         TriggerClientEvent('inventory:client:ItemBox', src, QBCore.Shared.Items[item], 'add', amount)
     elseif kind == 'remove' then
-        cooldown = os.time() + (Config.Cooldown * 60 * 60)
+        cooldown = os.time() + (Config.Cooldown * 60)
         Player.Functions.RemoveItem(item, amount)
         TriggerClientEvent('inventory:client:ItemBox', src, QBCore.Shared.Items[item], 'remove', amount)
-    end    
+    end
 end)
 
 RegisterNetEvent("cad-gundrop:server:showTarget", function(obj, item, amount)
